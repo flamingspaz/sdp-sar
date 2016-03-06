@@ -41,7 +41,7 @@ public class PDAModel {
     }
 
     // file reader
-    public String readFile(String path) throws IOException {
+    private String readFile(String path) throws IOException {
         // read file from PDA
         String content = "";
 
@@ -82,7 +82,7 @@ public class PDAModel {
     }
     
     // check if directory exists
-    public static boolean checkForDrive(String dir) {
+    private static boolean checkForDrive(String dir) {
         return new File(dir).exists();
     }
 }
