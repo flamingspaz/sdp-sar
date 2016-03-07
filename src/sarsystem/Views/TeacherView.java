@@ -22,6 +22,7 @@ public class TeacherView extends JFrame implements ActionListener {
     JScrollPane scrollPane;
     String[] columnNames = {"First Name", "Last Name", "Attented"};
     DefaultTableModel model;
+    JButton registerBtn = new JButton("Take Register");
 
     public TeacherView() {
         // Set windows properties
@@ -77,7 +78,8 @@ public class TeacherView extends JFrame implements ActionListener {
         getContentPane().add(scrollPane);
         table.getTableHeader().setReorderingAllowed(false);  // http://stackoverflow.com/questions/17641123/jtable-disable-user-column-dragging
 
-
+        add(new JLabel("                                                                                                       "));
+        add(registerBtn);
         /*table = new JTable(data, columnNames);
          add(new JScrollPane(table)); */
     }
