@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.*;
 import sarsystem.Models.PDAModel;
 import javax.swing.table.DefaultTableModel;
+import sarsystem.Controllers.TeacherController;
 import sarsystem.Models.AISModel;
 
 public class TeacherView extends JFrame implements ActionListener {
@@ -83,32 +84,8 @@ public class TeacherView extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Check which event has been triggered
-        if (e.getSource() == logout) { // logout triggered event
-            this.dispose(); // close window
-            new LoginView();
-        } else if (e.getSource() == readFromPDA) { // reading from PDA event
-            PDAModel p = new PDAModel();
-            // check if the file exists
-            if (p.isPDAPluggedIn() == true) {
-                String [] IDlist = p.getIDList();
-                for (int i = 0; i < IDlist.length-1; i++) {
-                    System.out.println(IDlist[i]); // get list of ID's from the file
-                    //System.out.println(list[i] + " -- " + AISModel.studentName(list[i])); -- get student Name
-                 }
-                System.out.println(model.getValueAt(1, 2));
-                model.setValueAt(new Boolean(true), 1, 2);
-                model.fireTableDataChanged();
-                model.fireTableCellUpdated(1, 0);
-                table.repaint();
-                this.repaint();
-                System.out.println(model.getValueAt(1, 2));
-            } else {
-                JOptionPane.showMessageDialog(null, "File not found! Please check PDA connection", "Warning", JOptionPane.ERROR_MESSAGE); // the file does not exist, thor an error
-            }
-        }
-
-        // check which session is selected and load students for this session
+        
+         // check which session is selected and load students for this session
         int choice = sessionList.getSelectedIndex();
         switch (choice) {//check for a match
             case 0:
@@ -128,6 +105,31 @@ public class TeacherView extends JFrame implements ActionListener {
                 table.setModel(model); // change the session
                 break;
         }
+        
+        
+        // Check which event has been triggered
+        if (e.getSource() == logout) { // logout triggered event
+            this.dispose(); // close window
+            new LoginView();
+        } else if (e.getSource() == readFromPDA) { // reading from PDA event
+            PDAModel p = new PDAModel();
+            TeacherController tc = new TeacherController();
+            // check if the file exists
+            if (p.isPDAPluggedIn() == true) {                  
+            String [] IDlist = p.getIDList();
+                // loop through table
+                for (int i = 0; i < table.getRowCount(); i++) {
+                        String name = ""+model.getValueAt(i, 0);
+                        String surname = ""+model.getValueAt(i, 1);
+                        if (tc.updateTable(name, surname, IDlist) == true){
+                            model.setValueAt(new Boolean(true), i, 2);
+                        }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "File not found! Please check PDA connection", "Warning", JOptionPane.ERROR_MESSAGE); // the file does not exist, thor an error
+            }
+        }
+       
     }
 
 }
