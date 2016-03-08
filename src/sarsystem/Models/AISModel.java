@@ -22,7 +22,7 @@ public class AISModel {
             // getting the data back
             ResultSet res = sta.executeQuery("SELECT * FROM Course"); // SQL query
             while (res.next()) {
-                String course = res.getString("CourseID") + ", " + res.getString("Title") + ", " + res.getString("Time") + ", " + teacherName(res.getString("TeacherID")) + ", " + res.getString("SessionType");
+                String course = res.getString("CourseID") + ", " + res.getString("CourseName") + ", " + res.getString("Time") + ", " + teacherName(res.getString("TeacherID")) + ", " + res.getString("SessionType");
                 list.add(course);
             }
             res.close();
@@ -45,7 +45,7 @@ public class AISModel {
             Statement sta = con.createStatement();
 
             // getting the data back
-            ResultSet res = sta.executeQuery("SELECT * FROM Teacher WHERE TeacherID=" + TeacherID); // SQL query
+            ResultSet res = sta.executeQuery("SELECT * FROM Teacher WHERE TeacherID='" + TeacherID+"'"); // SQL query
             while (res.next()) {
                 name = res.getString("Name") + " " + res.getString("Surname");
             }
@@ -70,7 +70,7 @@ public class AISModel {
             Statement sta = con.createStatement();
 
             // getting the data back
-            ResultSet res = sta.executeQuery("SELECT Name, Surname FROM Student WHERE CourseID='" + CourseID + "'"); // SQL query
+            ResultSet res = sta.executeQuery("SELECT Name, Surname FROM Student WHERE Course1='" + CourseID + "' OR Course2='" + CourseID + "' OR Course3='" + CourseID + "' OR Course4='" + CourseID + "'"); // SQL query
             while (res.next()) {
                 data[i][0] = res.getString("Name");
                 data[i][1] = res.getString("Surname");

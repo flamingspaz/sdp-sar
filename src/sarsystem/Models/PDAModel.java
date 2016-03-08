@@ -31,6 +31,7 @@ public class PDAModel {
                         System.out.println("File not found! : " + io);
                     }
                     exists = true;
+                    break;
                 }
                 else {
                     exists = false;

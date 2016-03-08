@@ -59,7 +59,7 @@ public class TeacherView extends JFrame implements ActionListener {
         // http://stackoverflow.com/questions/7391877/how-to-add-checkboxes-to-jtable-swing
         // add cheboxes to jtable
 
-        model = new DefaultTableModel(AISModel.studentTable("COMP1549"), columnNames);
+        model = new DefaultTableModel(AISModel.studentTable("COMP1632"), columnNames);
         table = new JTable(model) {
             private static final long serialVersionUID = 1L;
             @Override
@@ -92,7 +92,7 @@ public class TeacherView extends JFrame implements ActionListener {
         int choice = sessionList.getSelectedIndex();
         switch (choice) {//check for a match
             case 0:
-                model = new DefaultTableModel(AISModel.studentTable("COMP1549"), columnNames);
+                model = new DefaultTableModel(AISModel.studentTable("COMP1632"), columnNames);
                 table.setModel(model); // change the session
                 break;
             case 1:
@@ -104,7 +104,7 @@ public class TeacherView extends JFrame implements ActionListener {
                 table.setModel(model); // change the session
                 break;
             case 3:
-                model = new DefaultTableModel(AISModel.studentTable("COMP1632"), columnNames);
+                model = new DefaultTableModel(AISModel.studentTable("COMP1549"), columnNames);
                 table.setModel(model); // change the session
                 break;
         }
