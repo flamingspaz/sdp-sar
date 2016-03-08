@@ -7,30 +7,42 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import static sarsystem.Models.AISModel.teacherName;
 
+public class LoginModel extends DBConnector {
 
-public class LoginModel {
-    
-    
-    public static boolean loginTeacher(String username, String password){
+    public static boolean loginTeacher(String username, String password) {
         String name = "";
         boolean exists = false;
-        // create connetion
-        Connection con = null;
+        select("SELECT Name, Surname FROM Teacher WHERE Username='" + username + "' AND Password='" + password + "'");
         try {
-            // establish connection
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/AIS");
-            Statement sta = con.createStatement();
-            // getting the data back
-            ResultSet res = sta.executeQuery("SELECT Name, Surname FROM Teacher WHERE Username='" + username + "' AND Password='" + password + "'"); // SQL query
             while (res.next()) {
                 name = res.getString("Name") + " " + res.getString("Surname");
                 exists = true;
             }
+            // close DB connection
             res.close();
             sta.close();
             con.close();
-        } catch (Exception e) {
-            System.err.println("Exception: " + e.getMessage());
+        } catch (Exception er) {
+            System.out.println(er);
+        }
+        return exists;
+    }
+    
+    public static boolean loginStudent(String username, String password) {
+        String name = "";
+        boolean exists = false;
+        select("SELECT Name, Surname FROM Student WHERE Username='" + username + "' AND Password='" + password + "'");
+        try {
+            while (res.next()) {
+                name = res.getString("Name") + " " + res.getString("Surname");
+                exists = true;
+            }
+            // close DB connection
+            res.close();
+            sta.close();
+            con.close();
+        } catch (Exception er) {
+            System.out.println(er);
         }
         return exists;
     }
