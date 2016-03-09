@@ -77,7 +77,6 @@ public class AISModel extends DBConnector {
     // Identify student name using student ID
     public static String studentName(String studentID) {
         String name = "";
-        Connection con = null;
         try {
             select("SELECT Name, Surname FROM Student WHERE StudentID=" + studentID + "");
             while (res.next()) {
@@ -91,5 +90,52 @@ public class AISModel extends DBConnector {
             System.out.println(e);
         }
         return name;
+    }
+    
+    public static String[] studentDetails (String studentID){
+        String[] info = new String[12];
+        try {
+            select("SELECT * FROM Student WHERE StudentID=" + studentID);
+            while (res.next()){
+               info[0] = res.getString("StudentID");
+               info[1] = res.getString("DOB");
+               info[2] = res.getString("TempReg");
+               info[3] = res.getString("PermReg");
+               info[4] = res.getString("Photograph");
+               info[5] = res.getString("ProgrammeName");
+               info[6] = res.getString("Course1");
+               info[7] = res.getString("Course2");
+               info[8] = res.getString("Course3");
+               info[9] = res.getString("Course4");
+               info[10] = res.getString("Username");
+               info[11] = res.getString("Password");
+            }
+            // close DB connection
+            res.close();
+            sta.close();
+            con.close();
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return info;
+    }
+    
+    public static String photoPath(String studentID){
+        String path = "";
+        try {
+            select("SELECT Photograph FROM Student WHERE StudentID=" + studentID);
+            while (res.next()){
+                path = res.getString("Photograph");
+            }
+            // close DB connection
+            res.close();
+            sta.close();
+            con.close();
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return path;
     }
 }

@@ -56,8 +56,9 @@ public class LoginView extends JFrame implements ActionListener {
             new TeacherView();
             this.dispose(); // close window
         }
-        else if (login.loginStudent(loginTxt.getText(), passwordTxt.getText())){
-            new StudentView();
+        else if (!login.loginStudent(loginTxt.getText(), passwordTxt.getText()).equals("")){
+            String sID = login.loginStudent(loginTxt.getText(), passwordTxt.getText());
+            new StudentView(sID);
             this.dispose(); // close window
         }
         else {

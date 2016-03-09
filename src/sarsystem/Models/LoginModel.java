@@ -28,14 +28,12 @@ public class LoginModel extends DBConnector {
         return exists;
     }
     
-    public static boolean loginStudent(String username, String password) {
-        String name = "";
-        boolean exists = false;
-        select("SELECT Name, Surname FROM Student WHERE Username='" + username + "' AND Password='" + password + "'");
+    public static String loginStudent(String username, String password) {
+        String sID = "";
+        select("SELECT StudentID FROM Student WHERE Username='" + username + "' AND Password='" + password + "'");
         try {
             while (res.next()) {
-                name = res.getString("Name") + " " + res.getString("Surname");
-                exists = true;
+                sID = res.getString("StudentID");
             }
             // close DB connection
             res.close();
@@ -44,6 +42,6 @@ public class LoginModel extends DBConnector {
         } catch (Exception er) {
             System.out.println(er);
         }
-        return exists;
+        return sID;
     }
 }
