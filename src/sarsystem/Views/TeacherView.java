@@ -96,15 +96,15 @@ public class TeacherView extends JFrame implements ActionListener {
                 table.setModel(model); // change the session
                 break;
             case 1:
-                model = new DefaultTableModel(AISModel.studentTable("COMP1556"), columnNames);
+                model = new DefaultTableModel(AISModel.studentTable("COMP1549"), columnNames);
                 table.setModel(model); // change the session
                 break;
             case 2:
-                model = new DefaultTableModel(AISModel.studentTable("COMP1562"), columnNames);
+                model = new DefaultTableModel(AISModel.studentTable("COMP1556"), columnNames);
                 table.setModel(model); // change the session
                 break;
             case 3:
-                model = new DefaultTableModel(AISModel.studentTable("COMP1549"), columnNames);
+                model = new DefaultTableModel(AISModel.studentTable("COMP1562"), columnNames);
                 table.setModel(model); // change the session
                 break;
         }

@@ -10,10 +10,21 @@ public class AISModel extends DBConnector {
 
     // get session List
     public static Object[] sessionList() {
+        
+        ResultSet res = null;
+        Connection con = null;
+        Statement sta = null;
         // create table of content
         ArrayList list = new ArrayList();        
         try {
-            select("SELECT * FROM Course");
+            //select("SELECT * FROM Course");
+            
+            // establish connection
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/AIS");
+            sta = con.createStatement();
+            // getting the data back
+            res = sta.executeQuery("SELECT * FROM Course"); // SQL query
+            
             while (res.next()) {
                 String courseID = res.getString("CourseID");
                 String courseName = res.getString("CourseName");
@@ -42,9 +53,9 @@ public class AISModel extends DBConnector {
             while (res.next()) {
                 name = res.getString("Name") + " " + res.getString("Surname");
             }
-            res.close();
-            sta.close();
-            con.close();
+//            res.close();
+//            sta.close();
+//            con.close();
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -53,7 +64,7 @@ public class AISModel extends DBConnector {
 
     // create a table of students for a session using courseID
     public static Object[][] studentTable(String CourseID) {
-        Object data[][] = new Object[4][3];
+        Object data[][] = new Object[5][3];
         int i = 0;
         
         try {
