@@ -29,6 +29,7 @@ public class LoginView extends JFrame implements ActionListener {
         // Login box
         add(new JLabel("Login: "));
         add(loginTxt);
+        loginTxt.addActionListener(this); // possible to try login there, may have mistyped password
 
         // Password box
         add(new JLabel("Password: "));
@@ -53,8 +54,14 @@ public class LoginView extends JFrame implements ActionListener {
         
         // login teacher
         if (login.loginTeacher(loginTxt.getText(), passwordTxt.getText()) == true){
+            if (loginTxt.getText().equals("admin")) {
+                new CourseCoordinatorView();
+                this.dispose(); // close window
+            }
+            else {
             new TeacherView();
             this.dispose(); // close window
+            }
         }
         else if (!login.loginStudent(loginTxt.getText(), passwordTxt.getText()).equals("")){
             String sID = login.loginStudent(loginTxt.getText(), passwordTxt.getText());

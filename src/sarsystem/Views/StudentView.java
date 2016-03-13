@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
+import static sarsystem.Controllers.StudentController.getStatistics;
 import sarsystem.Models.AISModel;
 import static sarsystem.Models.AISModel.photoPath;
 import static sarsystem.Models.AISModel.studentDetails;
@@ -32,11 +33,11 @@ public class StudentView extends JFrame implements ActionListener {
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
-        
+
         menuBar.add(exit);
         setJMenuBar(menuBar);
-        
-         // Add sub menu to Exit
+
+        // Add sub menu to Exit
         exit.add(logout);
         logout.addActionListener(this);
 
@@ -69,11 +70,11 @@ public class StudentView extends JFrame implements ActionListener {
         hideUnhide.addActionListener(this);
 
         // add courses
-        add(new JLabel("<html>Your Courses:<br>" + studentDetails(studentID)[6] + "<br>" + studentDetails(studentID)[7] + "<br>" + studentDetails(studentID)[8] + "<br>" + studentDetails(studentID)[9] + "</html>", SwingConstants.CENTER));
-        
+        add(new JLabel("<html>Your Courses:<br>" + studentDetails(studentID)[6] + " " + getStatistics(studentID, studentDetails(studentID)[6]) + "<br>" + studentDetails(studentID)[7] + " " + getStatistics(studentID, studentDetails(studentID)[7]) + "<br>" + studentDetails(studentID)[8] + " " + getStatistics(studentID, studentDetails(studentID)[8]) + "<br>" + studentDetails(studentID)[9] + " " + getStatistics(studentID, studentDetails(studentID)[9]) + "</html>", SwingConstants.CENTER));
+
         // add programme name
         add(new JLabel("Degree of study: " + studentDetails(studentID)[5]));
-        
+
         // add student photo
         ImageIcon photo;
         if (photoPath(studentID) != null) {
@@ -82,16 +83,15 @@ public class StudentView extends JFrame implements ActionListener {
             Image img = photo.getImage();
             Image newimg = img.getScaledInstance(100, 120, java.awt.Image.SCALE_SMOOTH);
             photo = new ImageIcon(newimg);
-        }
-        else {
-           // default Image
+        } else {
+            // default Image
             photo = new ImageIcon("images/blank.jpg");
             Image img = photo.getImage();
             Image newimg = img.getScaledInstance(100, 120, java.awt.Image.SCALE_SMOOTH);
-            photo = new ImageIcon(newimg); 
-        }        
-            add(new JLabel(photo));
-
+            photo = new ImageIcon(newimg);
+        }
+        add(new JLabel(photo));
+        
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -107,8 +107,7 @@ public class StudentView extends JFrame implements ActionListener {
                 passwordField.setEchoChar('•'); // hide password
                 hideUnhide.setText("Unhide");
             }
-        }
-        else if (e.getSource() == logout) { // logout triggered event
+        } else if (e.getSource() == logout) { // logout triggered event
             this.dispose(); // close window
             new LoginView();
         }

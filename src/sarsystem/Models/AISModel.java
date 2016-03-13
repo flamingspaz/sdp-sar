@@ -4,27 +4,51 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AISModel extends DBConnector {
+    
+    // get studentID with name
+    
+    public static String studentID(String name, String surname){
+        String sID = "";
+        try {
+            // getting the data back
+            select("SELECT StudentID FROM Student WHERE Name='" + name + "' AND Surname='" + surname + "'");
+            while (res.next()) {
+                sID = res.getString("StudentID");
+            }
+//            res.close();
+//            sta.close();
+//            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return sID;
+    }
+    
+    
 
     // get session List
     public static Object[] sessionList() {
-        
+
         ResultSet res = null;
         Connection con = null;
         Statement sta = null;
         // create table of content
-        ArrayList list = new ArrayList();        
+        ArrayList list = new ArrayList();
         try {
             //select("SELECT * FROM Course");
-            
+
             // establish connection
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/AIS");
             sta = con.createStatement();
             // getting the data back
             res = sta.executeQuery("SELECT * FROM Course"); // SQL query
-            
+
             while (res.next()) {
                 String courseID = res.getString("CourseID");
                 String courseName = res.getString("CourseName");
@@ -47,7 +71,7 @@ public class AISModel extends DBConnector {
     // get teacher name using their teacherID
     static String teacherName(String TeacherID) {
         String name = "";
-        try {            
+        try {
             // getting the data back
             select("SELECT * FROM Teacher WHERE TeacherID=" + TeacherID + "");
             while (res.next()) {
@@ -66,7 +90,7 @@ public class AISModel extends DBConnector {
     public static Object[][] studentTable(String CourseID) {
         Object data[][] = new Object[5][3];
         int i = 0;
-        
+
         try {
             select("SELECT Name, Surname FROM Student WHERE Course1='" + CourseID + "' OR Course2='" + CourseID + "' OR Course3='" + CourseID + "' OR Course4='" + CourseID + "'"); // SQL query
             while (res.next()) {
@@ -102,51 +126,78 @@ public class AISModel extends DBConnector {
         }
         return name;
     }
-    
-    public static String[] studentDetails (String studentID){
+
+    public static String[] studentDetails(String studentID) {
         String[] info = new String[12];
         try {
             select("SELECT * FROM Student WHERE StudentID=" + studentID);
-            while (res.next()){
-               info[0] = res.getString("StudentID");
-               info[1] = res.getString("DOB");
-               info[2] = res.getString("TempReg");
-               info[3] = res.getString("PermReg");
-               info[4] = res.getString("Photograph");
-               info[5] = res.getString("ProgrammeName");
-               info[6] = res.getString("Course1");
-               info[7] = res.getString("Course2");
-               info[8] = res.getString("Course3");
-               info[9] = res.getString("Course4");
-               info[10] = res.getString("Username");
-               info[11] = res.getString("Password");
+            while (res.next()) {
+                info[0] = res.getString("StudentID");
+                info[1] = res.getString("DOB");
+                info[2] = res.getString("TempReg");
+                info[3] = res.getString("PermReg");
+                info[4] = res.getString("Photograph");
+                info[5] = res.getString("ProgrammeName");
+                info[6] = res.getString("Course1");
+                info[7] = res.getString("Course2");
+                info[8] = res.getString("Course3");
+                info[9] = res.getString("Course4");
+                info[10] = res.getString("Username");
+                info[11] = res.getString("Password");
             }
             // close DB connection
             res.close();
             sta.close();
             con.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return info;
     }
-    
-    public static String photoPath(String studentID){
+
+    public static String photoPath(String studentID) {
         String path = "";
         try {
             select("SELECT Photograph FROM Student WHERE StudentID=" + studentID);
-            while (res.next()){
+            while (res.next()) {
                 path = res.getString("Photograph");
             }
             // close DB connection
             res.close();
             sta.close();
             con.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return path;
+    }
+
+    public static String getCourseStartDate(String CourseID) {
+        String dateString = "";
+        String formattedDate = "";
+        try {
+            select("SELECT StartDate FROM Course WHERE CourseID='" + CourseID + "'");
+            while (res.next()) {
+                dateString = res.getString("StartDate");
+            }
+            // close DB connection
+            res.close();
+            sta.close();
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+        Date date = originalFormat.parse(dateString);
+        formattedDate = targetFormat.format(date);  // 20120821
+        }
+        catch (Exception e ){
+            System.out.println(e);
+        }
+
+        return formattedDate;
     }
 }
