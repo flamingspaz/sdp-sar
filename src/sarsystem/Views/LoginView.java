@@ -53,20 +53,17 @@ public class LoginView extends JFrame implements ActionListener {
         */
         
         // login teacher
-        if (login.loginTeacher(loginTxt.getText(), passwordTxt.getText()) == true){
-            if (loginTxt.getText().equals("admin")) {
-                new CourseCoordinatorView();
+        if (login.loginUser(loginTxt.getText(), passwordTxt.getText()) == true){
+            if (login.userIsTeacher(loginTxt.getText(), passwordTxt.getText())) {
+                new TeacherView();
                 this.dispose(); // close window
             }
             else {
-            new TeacherView();
+                // TODO: new CourseCoordinatorView();
+            //new TeacherView();
+            new StudentView(String.valueOf(login.getUserID(loginTxt.getText(), passwordTxt.getText())));
             this.dispose(); // close window
             }
-        }
-        else if (!login.loginStudent(loginTxt.getText(), passwordTxt.getText()).equals("")){
-            String sID = login.loginStudent(loginTxt.getText(), passwordTxt.getText());
-            new StudentView(sID);
-            this.dispose(); // close window
         }
         else {
             JOptionPane.showMessageDialog(null, "The Username or Password incorrect", "Warning", JOptionPane.ERROR_MESSAGE);

@@ -59,12 +59,12 @@ public class StudentView extends JFrame implements ActionListener {
 
         add(new JLabel("Username:"));
         add(usernameField);
-        usernameField.setText(studentDetails(studentID)[10]);
+        usernameField.setText(studentDetails(studentID)[6]);
         usernameField.setEditable(false);
 
         add(new JLabel("Password:"));
         add(passwordField);
-        passwordField.setText(studentDetails(studentID)[11]);
+        passwordField.setText(studentDetails(studentID)[7]);
         passwordField.setEditable(false);
         add(hideUnhide);
         hideUnhide.addActionListener(this);

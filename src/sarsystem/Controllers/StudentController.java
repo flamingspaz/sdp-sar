@@ -23,7 +23,7 @@ public class StudentController {
         Connection con = null;
         try {
             // establish connection
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/AIS");
+            con = DriverManager.getConnection("jdbc:postgresql://pgdb.lithium.navalrp.co.uk/sdpdb?user=sdpuser&password=nzm6xDSFaoXd6zySB5NN");
             Statement sta = con.createStatement();
 
             // getting the data back
