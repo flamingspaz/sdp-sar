@@ -44,18 +44,16 @@ public class AISModel extends DBConnector {
             //select("SELECT * FROM Course");
 
             // establish connection
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/AIS");
+            con = DriverManager.getConnection("jdbc:postgresql://pgdb.lithium.navalrp.co.uk/sdpdb?user=sdpuser&password=nzm6xDSFaoXd6zySB5NN");
             sta = con.createStatement();
             // getting the data back
-            res = sta.executeQuery("SELECT * FROM Course"); // SQL query
+            res = sta.executeQuery("SELECT courses.name, courses.id, programmes.name AS programme_name, users.name AS programme_leader FROM programmes, courses, users"); // SQL query
 
             while (res.next()) {
-                String courseID = res.getString("CourseID");
-                String courseName = res.getString("CourseName");
-                String time = res.getString("Time");
-                String teacherID = res.getString("TeacherID");
-                String sessionType = res.getString("SessionType");
-                String course = courseID + ", " + courseName + ", " + time + ", " + teacherName(teacherID) + ", " + sessionType;
+                String courseID = res.getString("id");
+                String courseName = res.getString("name");
+                String teacherID = res.getString("leader_id");
+                String course = courseID + ", " + courseName + ", " + teacherName(teacherID);
                 list.add(course);
             }
             // close DB connection
@@ -73,7 +71,7 @@ public class AISModel extends DBConnector {
         String name = "";
         try {
             // getting the data back
-            select("SELECT * FROM Teacher WHERE TeacherID=" + TeacherID + "");
+            select("SELECT users.name FROM users WHERE id =" + TeacherID + "");
             while (res.next()) {
                 name = res.getString("Name") + " " + res.getString("Surname");
             }
@@ -112,10 +110,11 @@ public class AISModel extends DBConnector {
     // Identify student name using student ID
     public static String studentName(String studentID) {
         String name = "";
+        System.out.println(studentID);
         try {
-            select("SELECT Name, Surname FROM Student WHERE StudentID=" + studentID + "");
+            select("SELECT users.name, users.surname FROM users WHERE id = " + studentID + "");
             while (res.next()) {
-                name = res.getString("Name") + " " + res.getString("Surname");
+                name = res.getString("name") + " " + res.getString("surname");
             }
             // close DB connection
             res.close();
@@ -130,20 +129,16 @@ public class AISModel extends DBConnector {
     public static String[] studentDetails(String studentID) {
         String[] info = new String[12];
         try {
-            select("SELECT * FROM Student WHERE StudentID=" + studentID);
+            select("SELECT users.id, users.dob, users.tempreg, users.permreg, users.photograph, programmes.name AS programme_name, users.username, users.password_hash FROM programmes, users WHERE users.id = " + studentID);
             while (res.next()) {
-                info[0] = res.getString("StudentID");
-                info[1] = res.getString("DOB");
-                info[2] = res.getString("TempReg");
-                info[3] = res.getString("PermReg");
-                info[4] = res.getString("Photograph");
-                info[5] = res.getString("ProgrammeName");
-                info[6] = res.getString("Course1");
-                info[7] = res.getString("Course2");
-                info[8] = res.getString("Course3");
-                info[9] = res.getString("Course4");
-                info[10] = res.getString("Username");
-                info[11] = res.getString("Password");
+                info[0] = res.getString("id");
+                info[1] = res.getString("dob");
+                info[2] = res.getString("tempreg");
+                info[3] = res.getString("permreg");
+                info[4] = res.getString("photograph");
+                info[5] = res.getString("programme_name");
+                info[6] = res.getString("username");
+                info[7] = res.getString("password_hash");
             }
             // close DB connection
             res.close();
@@ -155,6 +150,31 @@ public class AISModel extends DBConnector {
         return info;
     }
 
+       public static String[] studentCourses(String studentID) {
+        String[] info = new String[12];
+        try {
+            select("SELECT users.id, users.dob, users.tempreg, users.permreg, users.photograph, programmes.name AS programme_name, users.username, users.password_hash FROM programmes, users WHERE users.id = " + studentID);
+            while (res.next()) {
+                info[0] = res.getString("id");
+                info[1] = res.getString("dob");
+                info[2] = res.getString("tempreg");
+                info[3] = res.getString("permreg");
+                info[4] = res.getString("photograph");
+                info[5] = res.getString("programme_name");
+                info[6] = res.getString("username");
+                info[7] = res.getString("password_hash");
+            }
+            // close DB connection
+            res.close();
+            sta.close();
+            con.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return info;
+    }
+    
+    
     public static String photoPath(String studentID) {
         String path = "";
         try {

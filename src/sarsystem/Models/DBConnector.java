@@ -14,7 +14,7 @@ public class DBConnector {
         // create connection
         try {
             // establish connection
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/AIS");
+            con = DriverManager.getConnection("jdbc:postgresql://pgdb.lithium.navalrp.co.uk/sdpdb?user=sdpuser&password=nzm6xDSFaoXd6zySB5NN");
             sta = con.createStatement();
             // getting the data back
             res = sta.executeQuery(statement); // SQL query
@@ -26,7 +26,7 @@ public class DBConnector {
     public static void update(String statement){
         // create connection
         try {
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/AIS");
+            con = DriverManager.getConnection("jdbc:postgresql://pgdb.lithium.navalrp.co.uk/sdpdb?user=sdpuser&password=nzm6xDSFaoXd6zySB5NN");
             sta = con.createStatement(); 
             sta.executeUpdate(statement);
             res.close();
@@ -41,7 +41,7 @@ public class DBConnector {
     public static void insert(String statement){
         // create connection
         try {
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/AIS");
+            con = DriverManager.getConnection("jdbc:postgresql://pgdb.lithium.navalrp.co.uk/sdpdb?user=sdpuser&password=nzm6xDSFaoXd6zySB5NN");
             sta = con.createStatement(); 
             sta.executeUpdate(statement);
             res.close();
@@ -58,7 +58,7 @@ public class DBConnector {
         Connection con = null;
         try {
             // establish connection
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/AIS");
+            con = DriverManager.getConnection("jdbc:postgresql://pgdb.lithium.navalrp.co.uk/sdpdb?user=sdpuser&password=nzm6xDSFaoXd6zySB5NN");
             Statement sta = con.createStatement();
 
             // getting the data back

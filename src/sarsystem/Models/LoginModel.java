@@ -5,18 +5,23 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import org.mindrot.jbcrypt.BCrypt;
 import static sarsystem.Models.AISModel.teacherName;
 
 public class LoginModel extends DBConnector {
 
-    public static boolean loginTeacher(String username, String password) {
+    public static boolean loginUser(String username, String password) {
         String name = "";
         boolean exists = false;
-        select("SELECT Name, Surname FROM Teacher WHERE Username='" + username + "' AND Password='" + password + "'");
+        String pw_hash = BCrypt.hashpw(password, BCrypt.gensalt(12));
+        System.out.println(pw_hash);
+        select("SELECT users.name, users.surname, users.password_hash FROM users WHERE username='" + username + "'");
         try {
             while (res.next()) {
-                name = res.getString("Name") + " " + res.getString("Surname");
-                exists = true;
+                if (BCrypt.checkpw(password, res.getString("password_hash"))) {
+                name = res.getString("name") + " " + res.getString("surname");
+                exists = true;   
+                }
             }
             // close DB connection
             res.close();
@@ -28,20 +33,36 @@ public class LoginModel extends DBConnector {
         return exists;
     }
     
-    public static String loginStudent(String username, String password) {
-        String sID = "";
-        select("SELECT StudentID FROM Student WHERE Username='" + username + "' AND Password='" + password + "'");
+    public static boolean userIsTeacher(String username, String password) {
+        String pw_hash = BCrypt.hashpw(password, BCrypt.gensalt(12));
+        select("SELECT users.teacher, users.password_hash FROM users WHERE username='" + username + "'");
         try {
             while (res.next()) {
-                sID = res.getString("StudentID");
+                if (res.getBoolean("teacher") && BCrypt.checkpw(password, res.getString("password_hash"))) {
+                    return true;
+                }
             }
-            // close DB connection
-            res.close();
-            sta.close();
-            con.close();
-        } catch (Exception er) {
+
+        }
+        catch (Exception er) {
             System.out.println(er);
         }
-        return sID;
+        
+        return false;
     }
+    
+       public static int getUserID(String username, String password) {
+        select("SELECT users.id, users.password_hash FROM users WHERE username='" + username + "'");
+        try {
+            while (res.next()) {
+               return res.getInt("id");
+            }
+        }
+        catch (Exception er) {
+            System.out.println(er);
+        }
+        
+        return 0;
+    }
+
 }
